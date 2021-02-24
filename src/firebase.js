@@ -5,16 +5,17 @@ import 'firebase/database';
 import 'firebase/analytics'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBobDxZnZQS8MF_pOki4zKsOF3HZnyC-Kw",
-    authDomain: "chatify-5c1be.firebaseapp.com",
-    projectId: "chatify-5c1be",
-    storageBucket: "chatify-5c1be.appspot.com",
-    messagingSenderId: "1034600893137",
-    appId: "1:1034600893137:web:5ba1c69c53d98f498f13f0",
-    measurementId: "G-LJXX28EPXV"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+  apiKey: "AIzaSyDWR4imexwqHMJUvriop5zm0vQcycujpIQ",
+  authDomain: "chat-9ec7e.firebaseapp.com",
+  databaseURL: "https://chat-9ec7e-default-rtdb.firebaseio.com",
+  projectId: "chat-9ec7e",
+  storageBucket: "chat-9ec7e.appspot.com",
+  messagingSenderId: "314457149017",
+  appId: "1:314457149017:web:e2911667d5785e459cab48",
+  measurementId: "G-MQHW0Y19W2"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
-  export default firebase;
+export default firebase;

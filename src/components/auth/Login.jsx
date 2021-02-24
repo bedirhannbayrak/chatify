@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useFirebase } from "react-redux-firebase";
 import { Form, Segment, Button, Grid, Message } from 'semantic-ui-react'
 import styles from './login.module.css'
 import {Link} from 'react-router-dom'
 import {useForm} from 'react-hook-form'
 
 const Login = () => {
+
+    const firebase = useFirebase();
+    const [fbErrors, setFbErrors] = useState([]);
+    const [submitting, setSubmitting] = useState(false);
 
     const {register, errors, handleSubmit , setValue} = useForm();
 
@@ -14,9 +19,28 @@ const Login = () => {
          register({name : "email" }, {required:true});
     }, [])
 
-    const onSubmit = (data, e) => {
-        console.log(data )
+    const onSubmit = ({email,password}, e) => {
+        setSubmitting(true);
+        setFbErrors([]);
+
+        firebase.login({
+            email,
+            password
+        })
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            setFbErrors([{message:error.message}])
+        })
+        .finally(() =>{
+            setSubmitting(false);
+        })
     }
+
+    const displayErrors = () => (
+        fbErrors.map((error, index) => <p key={index} >{error.message}</p>)
+    )
 
     return (
         <Grid textAlign='center' verticalAlign='middle' className={styles.container} >
@@ -50,9 +74,14 @@ const Login = () => {
                         placeholder='Password'
                         type='password' 
                         />
-                        <Button fluid color='brown' size='large' >Login</Button>
+                        <Button fluid color='brown' size='large' disabled={submitting} >Login</Button>
                     </Segment>
                 </Form>
+                {
+                    fbErrors.length > 0 && (
+                        <Message error >{displayErrors()}</Message>
+                    )
+                }
                 <Message>
                     Do you want to <Link to='/signup'> Create New Account</Link> ?
                 </Message>
