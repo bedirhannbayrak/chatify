@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Segment, Button, Grid, Message } from 'semantic-ui-react'
 import styles from './signup.module.css'
-import {Link} from 'react-router-dom'
-const Login = () => {
+import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+const SignUp = () => {
+
+    const {register, errors, handleSubmit , setValue} = useForm();
+
+    useEffect(() => {
+        register({name : "username" }, {required:true});
+        register({name : "email" }, {required:true});
+        register({name : "password" } ,  {required:true , minLength:6});
+        
+   }, [])
+
+    const onSubmit = (data , e) => {
+        console.log(data)
 
     }
 
@@ -16,30 +27,42 @@ const Login = () => {
                 <Form
                     size='large'
                     className={styles.form}
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmit(onSubmit)}
                 >
                     <Segment>
-                    <Form.Input 
-                        fluid 
-                        icon='user' 
-                        iconPosition='left' 
-                        name='username' 
-                        placeholder='Username'
-                        type='text'
+                        <Form.Input
+                            fluid
+                            icon='user'
+                            iconPosition='left'
+                            name='username'
+                            onChange={(event , {name,value}) => {
+                                setValue(name,value);
+                            }}
+                            error = {errors.username ? true : false}
+                            placeholder='Username'
+                            type='text'
                         />
-                        <Form.Input 
-                        fluid icon='mail' 
-                        iconPosition='left' 
-                        name='email' 
-                        placeholder='Email Adress'
-                        type='email'
+                        <Form.Input
+                            fluid icon='mail'
+                            iconPosition='left'
+                            name='email'
+                            onChange={(event , {name,value}) => {
+                                setValue(name,value);
+                            }}
+                            error = {errors.email ? true : false}
+                            placeholder='Email Adress'
+                            type='email'
                         />
-                        <Form.Input 
-                        fluid icon='lock' 
-                        iconPosition='left' 
-                        name='password' 
-                        placeholder='Password'
-                        type='password' 
+                        <Form.Input
+                            fluid icon='lock'
+                            iconPosition='left'
+                            name='password'
+                            onChange={(event , {name,value}) => {
+                                setValue(name,value);
+                            }}
+                            error = {errors.password ? true : false}
+                            placeholder='Password'
+                            type='password'
                         />
                         <Button fluid color='brown' size='large' >Sign Up</Button>
                     </Segment>
@@ -52,4 +75,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignUp
