@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { Icon, Menu, Popup } from "semantic-ui-react";
 import ChannelList from "../Channels/ChannelList";
 import CreateChannelForm from "../Channels/CreateChannelForm";
+import UserPanel from '../UserPanel/UserPanel';
+
+
 
 const SidePanel = () => {
     const [open,setOpen] = useState(false)
 
     const handleOpen = () => {  
         console.log("opened")
-        setOpen(true);
-        
+        setOpen(true);        
     }
+
     const handleClose = () => {  
         setOpen(false);
     }
@@ -29,7 +32,7 @@ const SidePanel = () => {
             }}
             >
             <Menu.Item>
-                {/* <UserPanel /> */}
+                <UserPanel />
             </Menu.Item>
             <Menu.Item>
                 <Menu.Header>
