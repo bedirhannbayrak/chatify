@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Icon, Menu, Popup } from "semantic-ui-react";
+import ChannelList from "../Channels/ChannelList";
 import CreateChannelForm from "../Channels/CreateChannelForm";
 
 const SidePanel = () => {
@@ -41,11 +42,7 @@ const SidePanel = () => {
                         </Popup>
                     </span>
                 </Menu.Header>
-            {
-                [...new Array(10)].map((prop,index) => (
-                    <Menu.Item key={index} name="A" as="a" icon="hashtag" />
-                ))
-            }
+            <ChannelList />
 
             </Menu.Item>
             </Menu>
