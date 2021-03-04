@@ -1,45 +1,52 @@
-import {useSelector, useDispatch } from "react-redux";
-import {useFirebaseConnect , isLoaded , isEmpty} from "react-redux-firebase";
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useFirebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Menu } from 'semantic-ui-react';
-import { setCurrentChannel } from "../../store/actions/channels"
-
+import { setCurrentChannel } from '../../store/actions/channels';
 
 const ChannelList = () => {
+  useFirebaseConnect([{ path: 'channels' }]);
+  const channels = useSelector((state) => state.firebase.ordered.channels);
+  const currentChannel = useSelector((state) => state.channels.currentChannel);
+  const dispatch = useDispatch();
 
-    useFirebaseConnect([{path : "channels"}]);
-    const channels = useSelector(state => state.firebase.ordered.channels);
-    const currentChannel = useSelector(state => state.channels.currentChannel)
-    const dispatch = useDispatch();
+  const [mounted, setMounted] = useState(false);
 
-    const setActivaChannel = channel => {
-        // setCurrentChannel(channel) bu şekilde çalışmaz bunu dispatch içine almamız lazım.
-        dispatch(setCurrentChannel(channel));
+  useEffect(() => {
+    if (!mounted && !isEmpty(channels)) {
+      const { key, value } = channels[0];
+      setActivaChannel({ key, ...value });
+      setMounted(true);
     }
+  });
 
-    if(!isLoaded(channels)) {
-        return "Loading Channels..";
-    };
+  const setActivaChannel = (channel) => {
+    // setCurrentChannel(channel) bu şekilde çalışmaz bunu dispatch içine almamız lazım.
+    dispatch(setCurrentChannel(channel));
+  };
 
-    if(isEmpty(channels)) {
-        return "No channels";
-    };
+  if (!isLoaded(channels)) {
+    return 'Loading Channels..';
+  }
 
-    return (
-        <Menu.Menu>
-            {
-                channels.map(({key,value}) => (
-                    <Menu.Item 
-                    key={key}
-                    name={value?.name}
-                    as="a"
-                    icon="hashtag"
-                    active={currentChannel?.key === key}
-                    onClick={() => setActivaChannel({key, ...value})}
-                    />
-                ))
-            }
-        </Menu.Menu>
-    )
-}
+  if (isEmpty(channels)) {
+    return 'No channels';
+  }
 
-export default ChannelList
+  return (
+    <Menu.Menu>
+      {channels.map(({ key, value }) => (
+        <Menu.Item
+          key={key}
+          name={value?.name}
+          as='a'
+          icon='hashtag'
+          active={currentChannel?.key === key}
+          onClick={() => setActivaChannel({ key, ...value })}
+        />
+      ))}
+    </Menu.Menu>
+  );
+};
+
+export default ChannelList;
